@@ -4,7 +4,7 @@ import { Roboto } from "next/font/google";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["500"] });
 
-const Navbar = () => {
+const Header = () => {
   return (
     <div className="w-full bg-slate-200 sticky top-0 shadow-sm z-30">
       <div className="border-b-[1px] py-4">
@@ -25,4 +25,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Header;

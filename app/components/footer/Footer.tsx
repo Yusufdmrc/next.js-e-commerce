@@ -9,7 +9,7 @@ const Footer = () => {
       <Container>
         <div className="flex flex-col md:flex-row justify-between pt-16 mt-2">
           <List>
-            <h3 className="mb-2 font-bold text-base">Categories</h3>
+            <h3 className="mb-2 font-bold text-base">Kategoriler</h3>
             <Link href="#">Telefonlar</Link>
             <Link href="#">Televizyonlar</Link>
             <Link href="#">Laptoplar</Link>
