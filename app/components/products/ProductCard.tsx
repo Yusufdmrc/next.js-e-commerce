@@ -3,20 +3,23 @@
 import { setPrice } from "@/utils/setPrice";
 import { truncateText } from "@/utils/truncateText";
 import { Rating } from "@mui/material";
-import { access } from "fs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   data: any;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
+  const router = useRouter();
+
   const productRating =
     data.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
     data.reviews.length;
 
   return (
     <div
+      onClick={() => router.push(`/product/${data.id}`)}
       className="cursor-pointer text-center text-sm p-2 col-span-1 border-[1px] border-x-slate-200 bg-slate-50 rounded-xl
     transition hover:scale-105"
     >
