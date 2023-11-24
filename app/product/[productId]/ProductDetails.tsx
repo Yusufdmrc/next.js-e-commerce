@@ -3,6 +3,7 @@
 import Button from "@/app/components/Button";
 import ChangeColor from "@/app/components/products/ChangeColor";
 import ChangeQuantity from "@/app/components/products/ChangeQuantity";
+import ProductImage from "@/app/components/products/ProductImage";
 import { Rating } from "@mui/material";
 import { useCallback, useState } from "react";
 
@@ -80,7 +81,11 @@ const ProductDetails: React.FC<ProductDetailProps> = ({ product }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <div>Images</div>
+      <ProductImage
+        cartProduct={cartProduct}
+        product={product}
+        handleColorSelect={handleColorSelect}
+      />
       <div className="text-slate-400 text-sm flex flex-col gap-2  ">
         <h2 className="text-slate-600 font-medium text-2xl">{product.name}</h2>
         <div className="flex gap-3 items-center">
