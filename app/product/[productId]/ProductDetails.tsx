@@ -1,6 +1,8 @@
 "use client";
 
+import Button from "@/app/components/Button";
 import ChangeColor from "@/app/components/products/ChangeColor";
+import ChangeQuantity from "@/app/components/products/ChangeQuantity";
 import { Rating } from "@mui/material";
 import { useCallback, useState } from "react";
 
@@ -45,11 +47,34 @@ const ProductDetails: React.FC<ProductDetailProps> = ({ product }) => {
     product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
     product.reviews.length;
 
-  const handleColorSelect = useCallback((value: SelectedImgType) => {
+  const handleColorSelect = useCallback(
+    (value: SelectedImgType) => {
+      setCartProduct((prev) => {
+        return { ...prev, selectedImg: value };
+      });
+    },
+    [cartProduct.selectedImg]
+  );
+
+  const handleQuantityIncrease = useCallback(() => {
+    if (cartProduct.quantity === 99) {
+      return;
+    }
+
     setCartProduct((prev) => {
-      return { ...prev, selectedImg: value };
+      return { ...prev, quantity: prev.quantity + 1 };
     });
-  }, []);
+  }, [cartProduct]);
+
+  const handleQuantityDecrease = useCallback(() => {
+    if (cartProduct.quantity === 1) {
+      return;
+    }
+
+    setCartProduct((prev) => {
+      return { ...prev, quantity: prev.quantity - 1 };
+    });
+  }, [cartProduct]);
 
   console.log(cartProduct);
 
@@ -83,9 +108,15 @@ const ProductDetails: React.FC<ProductDetailProps> = ({ product }) => {
           handColorSelect={handleColorSelect}
         />
         <Horizantal />
-        <div>quality</div>
+        <ChangeQuantity
+          cartProduct={cartProduct}
+          handleQuantityIncrease={handleQuantityIncrease}
+          handleQuantityDecrease={handleQuantityDecrease}
+        />
         <Horizantal />
-        <div>sepete ekle</div>
+        <div className="max-w-[300px]">
+          <Button label="Sepete Ekle" onClick={() => {}} />
+        </div>
       </div>
     </div>
   );
