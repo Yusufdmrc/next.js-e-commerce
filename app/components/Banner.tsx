@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Banner = () => {
   return (
-    <div className="relative mb-8 bg-gradient-to-r from-sky-500 to-sky-700">
+    <div className="relative mb-8 bg-gradient-to-r from-sky-300 to-sky-700">
       <div className="px-8 py-12 mx-auto flex flex-col gap-2 md:flex-row items-center justify-evenly">
         <div className="text-center  mb-8 md:mb-0 ">
           <h1 className="text-white font-bold mb-4 text-4xl md:text-6xl">
