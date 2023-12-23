@@ -1,15 +1,17 @@
+"use client";
+
 import Container from "../components/Container";
 import FormWrapper from "../components/FormWrapper";
-import RegisterForm from "./RegisterForm";
+import LoginForm from "./LoginForm";
 
-const Register = () => {
+const Login = () => {
   return (
     <Container>
       <FormWrapper>
-        <RegisterForm />
+        <LoginForm />
       </FormWrapper>
     </Container>
   );
 };
 
-export default Register;
+export default Login;
