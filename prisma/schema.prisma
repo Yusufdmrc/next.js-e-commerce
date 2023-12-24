@@ -35,7 +35,7 @@ model User {
   hashedPassword String?
   createdAT DateTime @default(now())
   updateAt DateTime @updatedAt
-  role Role @default(user)
+  role Role @default(USER)
   accounts      Account[]
 }
 
