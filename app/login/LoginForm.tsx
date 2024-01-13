@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Headline from "../components/Headline";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
 import Input from "../components/inputs/Input";
@@ -10,8 +10,13 @@ import { AiOutlineGoogle } from "react-icons/ai";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { SafeUser } from "@/types";
 
-const LoginForm = () => {
+interface LoginFormProps {
+  currentUser: SafeUser | null;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ currentUser }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
@@ -25,6 +30,13 @@ const LoginForm = () => {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push("/cart");
+      router.refresh();
+    }
+  }, [currentUser, router]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -46,6 +58,12 @@ const LoginForm = () => {
     });
   };
 
+  if (currentUser) {
+    return (
+      <p className="text-center">Giriş yapıldı. Yönlendirme yapılıyor...</p>
+    );
+  }
+
   return (
     <Fragment>
       <Headline title="Giriş Yap" />
@@ -53,7 +71,9 @@ const LoginForm = () => {
         outline
         label="Google ile giriş yap"
         icon={AiOutlineGoogle}
-        onClick={() => {}}
+        onClick={() => {
+          signIn("google");
+        }}
       />
       <hr className="bg-slate-300 w-full h-px" />
       <Input
@@ -75,7 +95,7 @@ const LoginForm = () => {
       />
       <Button
         label={isLoading ? "Loading" : "Giriş Yap"}
-        onClick={() => handleSubmit(onSubmit)}
+        onClick={handleSubmit(onSubmit)}
       />
       <p className="text-sm">
         Hesabın yok mu?

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Headline from "../components/Headline";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
 import Input from "../components/inputs/Input";
@@ -11,9 +11,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { SafeUser } from "@/types";
 
-const RegisterForm = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+interface RegisterFormProps {
+  currentUser: SafeUser | null;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ currentUser }) => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -29,6 +34,13 @@ const RegisterForm = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    if (currentUser) {
+      router.push("/cart");
+      router.refresh();
+    }
+  }, [currentUser, router]);
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
@@ -37,7 +49,7 @@ const RegisterForm = () => {
       .then(() => {
         toast.success("Hesap oluşturuldu");
         signIn("credentials", {
-          email: data.emaill,
+          email: data.email,
           password: data.password,
           redirect: false,
         }).then((callback) => {
@@ -58,14 +70,22 @@ const RegisterForm = () => {
       });
   };
 
+  if (currentUser) {
+    return (
+      <p className="text-center">Giriş yapıldı. Yönlendirme yapılıyor...</p>
+    );
+  }
+
   return (
     <Fragment>
       <Headline title="Kayıt Ol" />
       <Button
         outline
-        label="Google ile kayıt ol"
+        label="Google ile devam et"
         icon={AiOutlineGoogle}
-        onClick={() => {}}
+        onClick={() => {
+          signIn("google");
+        }}
       />
       <hr className="bg-slate-300 w-full h-px" />
       <Input
@@ -95,7 +115,7 @@ const RegisterForm = () => {
       />
       <Button
         label={isLoading ? "Loading" : "Kayıt Ol"}
-        onClick={() => handleSubmit(onSubmit)}
+        onClick={handleSubmit(onSubmit)}
       />
       <p className="text-sm">
         Zaten bir hesabın var mı?{" "}

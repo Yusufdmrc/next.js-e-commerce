@@ -3,10 +3,12 @@ import Container from "../Container";
 import { Roboto } from "next/font/google";
 import CartCount from "./CartCount";
 import UserMenu from "./UserMenu";
+import { getCurrentUser } from "@/action/getCurrentUser";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["500"] });
 
-const Header = () => {
+const Header = async () => {
+  const currentUser = await getCurrentUser();
   return (
     <div className="w-full bg-slate-200 sticky top-0 shadow-sm z-30">
       <div className="border-b-[1px] py-4">
@@ -18,7 +20,7 @@ const Header = () => {
             <div className="hidden md:block">Ara</div>
             <div className="flex items-center gap-8 md:gap-12">
               <CartCount />
-              <UserMenu />
+              <UserMenu currentUser={currentUser} />
             </div>
           </div>
         </Container>
