@@ -6,9 +6,17 @@ import Headline from "../components/Headline";
 import Button from "../components/Button";
 import ItemContent from "./ItemContent";
 import { setPrice } from "@/utils/setPrice";
+import { SafeUser } from "@/types";
+import { useRouter } from "next/navigation";
 
-function CartDesign() {
+interface CartDesignProps {
+  currentUser: SafeUser | null;
+}
+
+const CartDesign: React.FC<CartDesignProps> = ({ currentUser }) => {
   const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
+
+  const router = useRouter();
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -54,7 +62,13 @@ function CartDesign() {
             <span>{setPrice(cartTotalAmount)}</span>
           </div>
           <p className="text-slate-500">Kargo ödeme sırasında hesaplanır</p>
-          <Button label="Ödeme" onClick={() => {}} />
+          <Button
+            label={currentUser ? "Ödeme" : "Ödeme için giriş yapın"}
+            outline={currentUser ? false : true}
+            onClick={() => {
+              currentUser ? router.push("/checkout") : router.push("/login");
+            }}
+          />
           <Link href={"/"} className="text-slate-500 items-center gap-1 mt-2">
             <MdArrowBack />
             <span>Alışverişe devam et</span>
@@ -63,6 +77,6 @@ function CartDesign() {
       </div>
     </div>
   );
-}
+};
 
 export default CartDesign;

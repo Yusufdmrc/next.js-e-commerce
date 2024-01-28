@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CheckoutForm from "./CheckoutForm";
+import Button from "../components/Button";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -53,7 +54,7 @@ const CheckoutClient = () => {
           toast.error("Bir şeyler yanlış gitti");
         });
     }
-  }, [cartProducts, paymentIntent]);
+  }, [cartProducts, paymentIntent, handleSetPaymentIntent, router]);
 
   const options: StripeElementsOptions = {
     clientSecret,
@@ -76,6 +77,21 @@ const CheckoutClient = () => {
             handleSetPaymentSuccess={handleSetPaymentSuccess}
           />
         </Elements>
+      )}
+      {loading && <div className="text-center">Ödeme yükleniyor...</div>}
+      {error && (
+        <div className="text-center text-rose-500">Bir şeyler yanlış gitti</div>
+      )}
+      {paymentSuccess && (
+        <div className="flex items-center flex-col gap-4">
+          <div className="text-teal-500 text-center">Ödeme başarılı</div>
+          <div className="max-w-[220px] w-full">
+            <Button
+              label="Siparişlerini incele"
+              onClick={() => router.push("/order")}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
